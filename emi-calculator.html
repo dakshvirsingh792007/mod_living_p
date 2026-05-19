@@ -1,0 +1,574 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>EMI Calculator — Mod Living</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --black:#080c0a;
+  --black-mid:#0e1410;
+  --black-card:#111a14;
+  --black-surface:#162019;
+  --green:#00e676;
+  --green-mid:#00c853;
+  --green-dark:#1b5e20;
+  --green-dim:#0a2e14;
+  --green-glow:rgba(0,230,118,0.18);
+  --green-glow-strong:rgba(0,230,118,0.32);
+  --white:#f0fff4;
+  --gray:#7a9e82;
+  --gray-mid:#4a6b52;
+  --border:rgba(0,230,118,0.12);
+  --border-bright:rgba(0,230,118,0.28);
+  --shadow:0 4px 32px rgba(0,0,0,0.6);
+  --shadow-lg:0 16px 56px rgba(0,0,0,0.7);
+  --shadow-green:0 0 32px rgba(0,230,118,0.15);
+  --gradient-hero:linear-gradient(135deg,#080c0a 0%,#0a1a0e 50%,#0e2415 100%);
+  --gradient-card:linear-gradient(145deg,#111a14,#162019);
+  --gradient-green:linear-gradient(135deg,#00e676,#00c853);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Jost',sans-serif;background:var(--black);color:var(--white);overflow-x:hidden;}
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:var(--black-mid);}
+::-webkit-scrollbar-thumb{background:var(--green-dark);border-radius:3px;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:72px;background:rgba(8,12,10,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 5%;}
+.logo{font-family:'Cormorant Garamond',serif;font-size:1.75rem;font-weight:700;color:var(--green);letter-spacing:-.5px;text-decoration:none;text-shadow:0 0 20px rgba(0,230,118,0.4);}
+.logo span{color:var(--white);}
+.nav-links{display:flex;gap:2rem;list-style:none;}
+.nav-links a{color:var(--gray);text-decoration:none;font-size:.83rem;font-weight:500;letter-spacing:.6px;text-transform:uppercase;transition:color .2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--green);}
+.nav-links a.active{border-bottom:2px solid var(--green);padding-bottom:2px;}
+.nav-right{display:flex;gap:.8rem;align-items:center;}
+.btn{padding:.55rem 1.4rem;border-radius:5px;font-size:.82rem;font-weight:600;letter-spacing:.4px;text-transform:uppercase;cursor:pointer;font-family:'Jost',sans-serif;transition:all .22s;text-decoration:none;border:1.5px solid transparent;display:inline-block;}
+.btn-ghost{border-color:var(--green);color:var(--green);background:transparent;}
+.btn-ghost:hover{background:var(--green);color:var(--black);box-shadow:0 0 20px var(--green-glow-strong);}
+.btn-fill{background:var(--gradient-green);color:var(--black);border:none;font-weight:700;}
+.btn-fill:hover{transform:translateY(-2px);box-shadow:0 8px 24px var(--green-glow-strong);}
+.mobile-menu-btn{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;}
+.mobile-menu-btn span{display:block;width:22px;height:2px;background:var(--green);border-radius:2px;}
+
+/* PAGE HERO */
+.page-hero{background:var(--gradient-hero);padding:7rem 5% 4rem;margin-top:72px;position:relative;overflow:hidden;}
+.page-hero::before{content:'';position:absolute;right:-10%;top:-20%;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(0,230,118,0.06) 0%,transparent 65%);pointer-events:none;}
+.page-hero-inner{max-width:1300px;margin:0 auto;}
+.breadcrumb{font-size:.75rem;color:var(--gray);letter-spacing:.5px;margin-bottom:1.2rem;}
+.breadcrumb a{color:var(--gray);text-decoration:none;transition:color .2s;}
+.breadcrumb a:hover{color:var(--green);}
+.breadcrumb span{color:var(--green-dark);}
+.page-hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,4vw,3.4rem);font-weight:700;line-height:1.1;margin-bottom:.6rem;}
+.page-hero h1 em{color:var(--green);font-style:italic;}
+.page-hero p{color:var(--gray);font-size:.97rem;line-height:1.75;max-width:520px;}
+
+/* MAIN LAYOUT */
+.calc-section{padding:3rem 5% 6rem;max-width:1300px;margin:0 auto;}
+.calc-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:2.5rem;align-items:start;}
+
+/* CALCULATOR CARD */
+.calc-card{background:var(--gradient-card);border:1px solid var(--border-bright);border-radius:20px;padding:2.5rem;box-shadow:var(--shadow-lg),var(--shadow-green);}
+.calc-card-title{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:700;margin-bottom:.3rem;}
+.calc-card-sub{color:var(--gray);font-size:.83rem;margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border);}
+
+/* INPUT GROUPS */
+.input-group{margin-bottom:1.8rem;}
+.input-label{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.55rem;}
+.input-label span{font-size:.7rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);}
+.input-value{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;color:var(--green);}
+
+/* RANGE SLIDER */
+.range-wrap{position:relative;}
+input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:4px;border-radius:2px;background:linear-gradient(to right,var(--green) var(--pct,50%),rgba(255,255,255,.08) var(--pct,50%));outline:none;cursor:pointer;margin-bottom:.6rem;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;background:var(--gradient-green);border:3px solid var(--black-card);box-shadow:0 0 12px var(--green-glow-strong);cursor:pointer;transition:transform .15s,box-shadow .15s;}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.2);box-shadow:0 0 20px var(--green-glow-strong);}
+input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--gradient-green);border:3px solid var(--black-card);cursor:pointer;}
+.range-minmax{display:flex;justify-content:space-between;font-size:.69rem;color:var(--gray-mid);letter-spacing:.3px;}
+
+/* RESULTS CARD */
+.result-card{background:var(--gradient-card);border:1px solid var(--border-bright);border-radius:20px;overflow:hidden;box-shadow:var(--shadow-lg),var(--shadow-green);}
+.result-top{background:linear-gradient(135deg,var(--green-dim),#0e2e18);padding:2.2rem 2.5rem;border-bottom:1px solid var(--border-bright);}
+.result-label{font-size:.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green);opacity:.75;margin-bottom:.4rem;}
+.emi-amount{font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,5vw,3.8rem);font-weight:700;color:var(--green);line-height:1;text-shadow:0 0 30px var(--green-glow);}
+.emi-per{font-size:.8rem;color:var(--gray);margin-top:.4rem;letter-spacing:.5px;}
+
+/* BREAKDOWN STATS */
+.breakdown{display:grid;grid-template-columns:1fr 1fr;gap:0;padding:0;}
+.bd-item{padding:1.6rem 2.5rem;border-right:1px solid var(--border);border-bottom:1px solid var(--border);}
+.bd-item:nth-child(2){border-right:none;}
+.bd-item:nth-child(3),.bd-item:nth-child(4){border-bottom:none;}
+.bd-item:nth-child(3){border-right:1px solid var(--border);}
+.bd-item:nth-child(4){border-right:none;}
+.bd-label{font-size:.67rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-bottom:.45rem;}
+.bd-val{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:700;color:var(--white);}
+.bd-val.green{color:var(--green);}
+
+/* DONUT CHART */
+.chart-wrap{padding:1.8rem 2.5rem;border-top:1px solid var(--border);display:flex;align-items:center;gap:2rem;}
+.donut-svg{flex-shrink:0;}
+.donut-legend{display:flex;flex-direction:column;gap:.9rem;}
+.leg-item{display:flex;align-items:center;gap:.7rem;font-size:.8rem;}
+.leg-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.leg-dot.principal{background:var(--green);}
+.leg-dot.interest{background:var(--gray-mid);}
+.leg-label{color:var(--gray);}
+.leg-pct{font-weight:700;color:var(--white);margin-left:auto;min-width:36px;text-align:right;}
+
+/* AMORTISATION TABLE */
+.table-section{margin-top:2.5rem;}
+.table-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem;flex-wrap:wrap;gap:.8rem;}
+.s-tag{font-size:.7rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--green);margin-bottom:.3rem;}
+.s-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:700;color:var(--white);}
+.view-toggle{display:flex;gap:0;background:var(--black-mid);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.vt-btn{padding:.4rem 1.1rem;font-size:.74rem;font-weight:600;font-family:'Jost',sans-serif;border:none;background:transparent;color:var(--gray);cursor:pointer;transition:all .2s;letter-spacing:.5px;text-transform:uppercase;}
+.vt-btn.active{background:var(--green-dim);color:var(--green);}
+
+/* TABLE */
+.table-wrap{background:var(--black-card);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+.emi-table{width:100%;border-collapse:collapse;}
+.emi-table thead tr{background:linear-gradient(135deg,var(--green-dim),#0e2418);border-bottom:1px solid var(--border-bright);}
+.emi-table th{padding:1rem 1.3rem;font-size:.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);text-align:right;}
+.emi-table th:first-child{text-align:left;}
+.emi-table td{padding:.85rem 1.3rem;font-size:.85rem;text-align:right;border-bottom:1px solid var(--border);color:var(--white);transition:background .15s;}
+.emi-table td:first-child{text-align:left;color:var(--gray);font-weight:600;}
+.emi-table tbody tr:hover td{background:var(--black-surface);}
+.emi-table tbody tr:last-child td{border-bottom:none;}
+.emi-table .td-green{color:var(--green);font-weight:600;}
+.emi-table .td-gray{color:var(--gray);}
+.emi-table tfoot tr{background:var(--black-surface);border-top:1px solid var(--border-bright);}
+.emi-table tfoot td{font-weight:700;font-size:.86rem;color:var(--white);}
+.emi-table tfoot td.td-green{color:var(--green);}
+
+/* TABLE PAGINATION */
+.table-note{text-align:center;padding:1rem;font-size:.78rem;color:var(--gray);border-top:1px solid var(--border);}
+
+/* INFO STRIP */
+.info-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:0;background:var(--black-card);border:1px solid var(--border-bright);border-radius:16px;overflow:hidden;margin-top:2rem;}
+.is-item{padding:1.6rem 2rem;text-align:center;border-right:1px solid var(--border);}
+.is-item:last-child{border-right:none;}
+.is-icon{font-size:1.6rem;margin-bottom:.6rem;}
+.is-label{font-size:.67rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-bottom:.3rem;}
+.is-val{font-size:.88rem;font-weight:600;color:var(--white);}
+
+/* CTA BANNER */
+.cta-banner{background:linear-gradient(135deg,var(--black-surface),var(--green-dim));border-top:1px solid var(--border-bright);border-bottom:1px solid var(--border-bright);padding:4rem 5%;text-align:center;margin-top:5rem;}
+.cta-banner h2{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3vw,2.6rem);font-weight:700;margin-bottom:.7rem;}
+.cta-banner p{color:var(--gray);max-width:440px;margin:0 auto 2rem;line-height:1.75;font-size:.95rem;}
+.cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+.btn-cta{background:var(--gradient-green);color:var(--black);border:none;padding:.9rem 2.4rem;border-radius:5px;font-family:'Jost',sans-serif;font-weight:700;font-size:.86rem;cursor:pointer;transition:all .22s;text-decoration:none;display:inline-block;letter-spacing:.4px;text-transform:uppercase;}
+.btn-cta:hover{transform:translateY(-2px);box-shadow:0 8px 24px var(--green-glow-strong);}
+.btn-cta-outline{background:transparent;color:var(--white);border:1.5px solid var(--border-bright);padding:.9rem 2.4rem;border-radius:5px;font-family:'Jost',sans-serif;font-weight:600;font-size:.86rem;cursor:pointer;transition:all .22s;text-decoration:none;display:inline-block;letter-spacing:.4px;text-transform:uppercase;}
+.btn-cta-outline:hover{border-color:var(--green);color:var(--green);}
+
+/* FOOTER */
+footer{background:var(--black-mid);color:rgba(255,255,255,.65);padding:1.4rem 5% .9rem;border-top:1px solid var(--border);}
+.f-wrap{max-width:1300px;margin:0 auto;}
+.f-top{display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;padding-bottom:.9rem;}
+.f-brand{display:flex;flex-direction:column;align-items:flex-start;max-width:420px;}
+.f-brand .logo{font-size:2rem;text-shadow:none !important;}
+.f-brand p{font-size:.95rem;line-height:1.6;margin-top:.6rem;max-width:none;}
+.f-explore{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;}
+.f-explore h4{font-size:.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35);}
+.f-links{display:flex;gap:1.1rem;flex-wrap:wrap;justify-content:flex-start;}
+.f-links a{color:rgba(255,255,255,.75);text-decoration:none;font-size:16px;padding:.3rem .6rem;border-radius:20px;transition:all .2s;}
+.f-links a:hover{color:var(--green);background:var(--green-dim);}
+.f-contact{display:flex;justify-content:space-between;align-items:center;gap:1.8rem;flex-wrap:wrap;padding:.9rem 0 .75rem;width:100%;}
+.f-contact h4{font-size:.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35);}
+.f-contact a,.f-contact span{color:rgba(255,255,255,.75);text-decoration:none;font-size:.95rem;line-height:1.6;transition:color .2s;}
+.f-contact a:hover{color:var(--green);}
+.f-bottom{padding-top:.65rem;max-width:1300px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.6rem;}
+.f-bottom p{font-size:.92rem;}
+
+/* RESPONSIVE */
+@media(max-width:960px){
+  .calc-grid{grid-template-columns:1fr;}
+  .f-top{flex-direction:column;gap:1.4rem;align-items:flex-start;}
+  .f-explore{justify-content:flex-start;}
+  .f-contact{justify-content:flex-start;gap:1rem;}
+  .info-strip{grid-template-columns:1fr;}
+  .is-item{border-right:none;border-bottom:1px solid var(--border);}
+  .is-item:last-child{border-bottom:none;}
+}
+@media(max-width:768px){
+  .nav-links{display:none;}
+  .nav-links.open{display:flex;flex-direction:column;position:fixed;top:72px;left:0;right:0;background:var(--black-mid);border-bottom:1px solid var(--border);padding:1.5rem 5%;gap:1.2rem;}
+  .mobile-menu-btn{display:flex;}
+  .nav-right .btn{display:none;}
+  .breakdown{grid-template-columns:1fr 1fr;}
+  .chart-wrap{flex-direction:column;align-items:flex-start;}
+}
+@media(max-width:540px){
+  .emi-table th,.emi-table td{padding:.7rem .8rem;font-size:.78rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index (1).html" class="logo">Mod<span>Living</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index (1).html">Home</a></li>
+    <li><a href="properties.html">Properties</a></li>
+    <li><a href="owners.html">Owners</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="emi-calculator.html" class="active">EMI Calc</a></li>
+  </ul>
+  <!-- <div class="nav-right">
+    <a href="owners.html" class="btn btn-ghost">List Property</a>
+    <a href="properties.html" class="btn btn-fill">Find Home</a>
+  </div> -->
+  <button class="mobile-menu-btn" onclick="document.getElementById('navLinks').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="breadcrumb"><a href="index (1).html">Home</a> <span>›</span> EMI Calculator</div>
+    <h1>Home Loan <em>EMI</em> Calculator</h1>
+    <p>Estimate your monthly repayments instantly. Adjust the loan amount, tenure, and interest rate to plan your finances with clarity.</p>
+  </div>
+</div>
+
+<!-- CALCULATOR -->
+<div class="calc-section">
+  <div class="calc-grid">
+
+    <!-- LEFT: INPUTS -->
+    <div class="calc-card">
+      <div class="calc-card-title">Loan Parameters</div>
+      <div class="calc-card-sub">Drag the sliders or type in values below</div>
+
+      <!-- Loan Amount -->
+      <div class="input-group">
+        <div class="input-label">
+          <span>Loan Amount</span>
+          <span class="input-value" id="loanDisplay">₹50,00,000</span>
+        </div>
+        <div class="range-wrap">
+          <input type="range" id="loanSlider" min="500000" max="50000000" step="100000" value="5000000" oninput="update()"/>
+        </div>
+        <div class="range-minmax"><span>₹5L</span><span>₹5Cr</span></div>
+      </div>
+
+      <!-- Interest Rate -->
+      <div class="input-group">
+        <div class="input-label">
+          <span>Annual Interest Rate</span>
+          <span class="input-value" id="rateDisplay">8.50%</span>
+        </div>
+        <div class="range-wrap">
+          <input type="range" id="rateSlider" min="5" max="20" step="0.1" value="8.5" oninput="update()"/>
+        </div>
+        <div class="range-minmax"><span>5%</span><span>20%</span></div>
+      </div>
+
+      <!-- Tenure -->
+      <div class="input-group">
+        <div class="input-label">
+          <span>Loan Tenure</span>
+          <span class="input-value" id="tenureDisplay">20 Years</span>
+        </div>
+        <div class="range-wrap">
+          <input type="range" id="tenureSlider" min="1" max="30" step="1" value="20" oninput="update()"/>
+        </div>
+        <div class="range-minmax"><span>1 Yr</span><span>30 Yrs</span></div>
+      </div>
+
+
+      <!-- <div class="info-strip">
+        <div class="is-item">
+          <div class="is-label">Loan Type</div>
+          <div class="is-val">Home Loan</div>
+        </div>
+        <div class="is-item">
+          <div class="is-label">Start Month</div>
+          <div class="is-val" id="startMonth">—</div>
+        </div>
+        <div class="is-item">
+          <div class="is-label">End Month</div>
+          <div class="is-val" id="endMonth">—</div>
+        </div>
+      </div> -->
+    </div>
+
+    <!-- RIGHT: RESULTS -->
+    <div class="result-card">
+      <div class="result-top">
+        <div class="result-label">Monthly EMI</div>
+        <div class="emi-amount" id="emiAmount">₹43,391</div>
+        <div class="emi-per">per month for <span id="tenureMonths">240</span> months</div>
+      </div>
+
+      <div class="breakdown">
+        <div class="bd-item">
+          <div class="bd-label">Principal Amount</div>
+          <div class="bd-val green" id="principalAmt">₹50,00,000</div>
+        </div>
+        <div class="bd-item">
+          <div class="bd-label">Total Interest</div>
+          <div class="bd-val" id="totalInterest">₹54,13,773</div>
+        </div>
+        <div class="bd-item">
+          <div class="bd-label">Total Payment</div>
+          <div class="bd-val" id="totalPayment">₹1,04,13,773</div>
+        </div>
+        <div class="bd-item">
+          <div class="bd-label">Interest Ratio</div>
+          <div class="bd-val green" id="interestRatio">52%</div>
+        </div>
+      </div>
+
+      <!-- Donut chart -->
+      <div class="chart-wrap">
+        <svg class="donut-svg" width="100" height="100" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="38" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="14"/>
+          <circle id="donutPrincipal" cx="50" cy="50" r="38" fill="none" stroke="#00e676" stroke-width="14"
+            stroke-dasharray="239 0" stroke-dashoffset="60" stroke-linecap="round"
+            style="transition:stroke-dasharray .6s cubic-bezier(.4,0,.2,1);transform-origin:50% 50%;transform:rotate(-90deg);"/>
+          <circle id="donutInterest" cx="50" cy="50" r="38" fill="none" stroke="#4a6b52" stroke-width="14"
+            stroke-dasharray="0 239" stroke-dashoffset="60" stroke-linecap="round"
+            style="transition:stroke-dasharray .6s cubic-bezier(.4,0,.2,1);transform-origin:50% 50%;transform:rotate(-90deg);"/>
+        </svg>
+        <div class="donut-legend">
+          <div class="leg-item">
+            <span class="leg-dot principal"></span>
+            <span class="leg-label">Principal</span>
+            <span class="leg-pct" id="legPrincipal">48%</span>
+          </div>
+          <div class="leg-item">
+            <span class="leg-dot interest"></span>
+            <span class="leg-label">Interest</span>
+            <span class="leg-pct" id="legInterest">52%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AMORTISATION TABLE -->
+  <div class="table-section">
+    <div class="table-head">
+      <div>
+        <div class="s-tag">Payment Schedule</div>
+        <div class="s-title">Amortisation Table</div>
+      </div>
+      <div class="view-toggle">
+        <button class="vt-btn active" id="btnMonthly" onclick="setView('monthly')">Monthly</button>
+        <button class="vt-btn" id="btnYearly" onclick="setView('yearly')">Yearly</button>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="emi-table">
+        <thead>
+          <tr>
+            <th>Period</th>
+            <th>EMI</th>
+            <th>Principal</th>
+            <th>Interest</th>
+            <th>Balance</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+        <tfoot id="tableFoot"></tfoot>
+      </table>
+      <div class="table-note" id="tableNote"></div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA BANNER -->
+<div class="cta-banner">
+  <h2>Ready to Take the Next Step?</h2>
+  <p>Browse our curated properties or contact us to find your perfect match within budget.</p>
+  <div class="cta-btns">
+    <a href="properties.html" class="btn-cta">Browse Properties</a>
+    <a href="contact.html" class="btn-cta-outline">Contact us</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-wrap">
+    <div class="f-top">
+      <div class="f-brand">
+        <a href="index (1).html" class="logo">Mod<span>Living</span></a>
+        <p>Curating modern living spaces for people who believe where you live shapes how you live.</p>
+      </div>
+      <div class="f-explore">
+        <h4>Explore</h4>
+        <div class="f-links">
+          <a href="properties.html">All Listings</a>
+          <a href="properties.html?tab=buy">For Buyers</a>
+          <a href="properties.html?tab=rent">For Renters</a>
+          <a href="owners.html">For Owners</a>
+        </div>
+      </div>
+    </div>
+    <div class="f-contact">
+      <h4>Contact Us</h4>
+      <a href="tel:+9193243254424">+91 93243254424</a>
+      <a href="mailto:mod_living11@gmail.com">mod_living11@gmail.com</a>
+      <span>Office No. 21B-7, Block C, Mohali Hills Commercial Complex,<br>Sector 105, Mohali, Punjab – 140308</span>
+    </div>
+  </div>
+  <div class="f-bottom">
+    <p>&copy; 2026 Mod Living. All rights reserved</p>
+    <p>Modern Property. Modern Life.</p>
+  </div>
+</footer>
+
+<script>
+// ─── FORMATTING ───────────────────────────────────────────────
+function fmtINR(n){
+  if(n>=10000000) return '₹'+( n/10000000).toFixed(2)+'Cr';
+  if(n>=100000)   return '₹'+(n/100000).toFixed(2)+'L';
+  return '₹'+Math.round(n).toLocaleString('en-IN');
+}
+function fmtFull(n){return '₹'+Math.round(n).toLocaleString('en-IN');}
+
+// ─── CORE EMI FORMULA ─────────────────────────────────────────
+function calcEMI(P,r,n){
+  if(r===0) return P/n;
+  const R=r/12/100;
+  return P*R*Math.pow(1+R,n)/(Math.pow(1+R,n)-1);
+}
+
+// ─── SLIDER GRADIENT UPDATE ───────────────────────────────────
+function syncSlider(el){
+  const min=+el.min,max=+el.max,val=+el.value;
+  const pct=((val-min)/(max-min)*100).toFixed(1);
+  el.style.setProperty('--pct',pct+'%');
+}
+
+// ─── VIEW MODE ────────────────────────────────────────────────
+let viewMode='monthly';
+function setView(v){
+  viewMode=v;
+  document.getElementById('btnMonthly').classList.toggle('active',v==='monthly');
+  document.getElementById('btnYearly').classList.toggle('active',v==='yearly');
+  renderTable();
+}
+
+// ─── MAIN UPDATE ─────────────────────────────────────────────
+function update(){
+  const P=+document.getElementById('loanSlider').value;
+  const rate=+document.getElementById('rateSlider').value;
+  const years=+document.getElementById('tenureSlider').value;
+  const n=years*12;
+
+  // Sync slider gradients
+  ['loanSlider','rateSlider','tenureSlider'].forEach(id=>syncSlider(document.getElementById(id)));
+
+  // Display labels
+  document.getElementById('loanDisplay').textContent=fmtINR(P);
+  document.getElementById('rateDisplay').textContent=rate.toFixed(2)+'%';
+  document.getElementById('tenureDisplay').textContent=years+' Year'+(years>1?'s':'');
+
+  const emi=calcEMI(P,rate,n);
+  const totalPay=emi*n;
+  const totalInt=totalPay-P;
+  const intPct=Math.round(totalInt/totalPay*100);
+  const priPct=100-intPct;
+
+  // Result card
+  document.getElementById('emiAmount').textContent=fmtFull(emi);
+  document.getElementById('tenureMonths').textContent=n;
+  document.getElementById('principalAmt').textContent=fmtINR(P);
+  document.getElementById('totalInterest').textContent=fmtINR(totalInt);
+  document.getElementById('totalPayment').textContent=fmtINR(totalPay);
+  document.getElementById('interestRatio').textContent=intPct+'%';
+
+  // Donut
+  const circ=2*Math.PI*38;
+  const priArc=(priPct/100*circ).toFixed(1);
+  const intArc=(intPct/100*circ).toFixed(1);
+  document.getElementById('donutPrincipal').style.strokeDasharray=priArc+' '+circ;
+  document.getElementById('donutInterest').style.strokeDasharray=intArc+' '+circ;
+  // offset the interest segment so it follows principal
+  const offset=(60-priArc*1).toFixed(1);
+  document.getElementById('donutInterest').setAttribute('stroke-dashoffset', (60-priArc).toFixed(1));
+  document.getElementById('legPrincipal').textContent=priPct+'%';
+  document.getElementById('legInterest').textContent=intPct+'%';
+
+  // Dates
+  const now=new Date();
+  const endDate=new Date(now.getFullYear(),now.getMonth()+n,1);
+  const monthNames=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  document.getElementById('startMonth').textContent=monthNames[now.getMonth()]+' '+now.getFullYear();
+  document.getElementById('endMonth').textContent=monthNames[endDate.getMonth()]+' '+endDate.getFullYear();
+
+  renderTable();
+}
+
+// ─── TABLE ────────────────────────────────────────────────────
+function renderTable(){
+  const P=+document.getElementById('loanSlider').value;
+  const rate=+document.getElementById('rateSlider').value;
+  const years=+document.getElementById('tenureSlider').value;
+  const n=years*12;
+  const R=rate/12/100;
+  const emi=calcEMI(P,rate,n);
+  const tbody=document.getElementById('tableBody');
+  const tfoot=document.getElementById('tableFoot');
+  const note=document.getElementById('tableNote');
+
+  let balance=P, totalP=0, totalI=0, totalE=0;
+  let rows=[];
+
+  if(viewMode==='monthly'){
+    const MAX_ROWS=60; // show first 5 years
+    for(let i=1;i<=n;i++){
+      const intPart=balance*R;
+      const priPart=emi-intPart;
+      balance=Math.max(0,balance-priPart);
+      totalP+=priPart; totalI+=intPart; totalE+=emi;
+      if(i<=MAX_ROWS) rows.push({label:'Month '+i,emi,prin:priPart,int:intPart,bal:balance});
+    }
+    note.textContent=n>MAX_ROWS?'Showing first 60 months of '+n+' total. Switch to Yearly for full view.':'';
+  } else {
+    for(let yr=1;yr<=years;yr++){
+      let yP=0,yI=0,yE=0;
+      for(let m=1;m<=12;m++){
+        const intPart=balance*R;
+        const priPart=emi-intPart;
+        balance=Math.max(0,balance-priPart);
+        yP+=priPart; yI+=intPart; yE+=emi;
+      }
+      totalP+=yP; totalI+=yI; totalE+=yE;
+      rows.push({label:'Year '+yr,emi:yE,prin:yP,int:yI,bal:Math.max(0,balance)});
+    }
+    note.textContent='';
+  }
+
+  tbody.innerHTML=rows.map(r=>`
+    <tr>
+      <td>${r.label}</td>
+      <td>${fmtFull(r.emi)}</td>
+      <td class="td-green">${fmtFull(r.prin)}</td>
+      <td class="td-gray">${fmtFull(r.int)}</td>
+      <td>${fmtFull(r.bal)}</td>
+    </tr>`).join('');
+
+  tfoot.innerHTML=`<tr>
+    <td>Total</td>
+    <td>${fmtFull(totalE)}</td>
+    <td class="td-green">${fmtFull(totalP)}</td>
+    <td class="td-gray">${fmtFull(totalI)}</td>
+    <td>—</td>
+  </tr>`;
+}
+
+// ─── INIT ─────────────────────────────────────────────────────
+['loanSlider','rateSlider','tenureSlider'].forEach(id=>syncSlider(document.getElementById(id)));
+update();
+</script>
+</body>
+</html>
