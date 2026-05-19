@@ -32,20 +32,3 @@ function submitContact(){
 		});
 	}
 }
-// End of scripts from contact.html
-
-// Scripts from emi-calculator.html
-// ...JS from emi-calculator.html...
-// End of scripts from emi-calculator.html
-
-// Scripts from index (1).html
-// ...JS from index (1).html...
-// End of scripts from index (1).html
-
-// Scripts from owners.html
-// ...JS from owners.html...
-// End of scripts from owners.html
-
-// Scripts from properties.html
-// ...JS from properties.html...
-// End of scripts from properties.html
