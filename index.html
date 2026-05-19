@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Login – Mod Living</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<script src="auth.js" defer></script>
 <style>
 /* ===== ROOT VARS ===== */
 :root{
@@ -28,9 +29,10 @@ body{
   background:var(--black);
   color:var(--white);
   min-height:100vh;
-  display:grid;
-  place-items:center;
-  padding:1.5rem;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  padding:96px 1.5rem 2rem;
   /* subtle animated background */
   background-image:
     radial-gradient(ellipse at 20% 50%,rgba(0,230,118,.05) 0%,transparent 60%),
@@ -53,7 +55,7 @@ nav{
 /* ===== AUTH CARD ===== */
 .auth-wrap{
   width:100%;max-width:460px;
-  margin-top:72px; /* nav offset */
+  margin:0 auto;
 }
 .auth-card{
   background:var(--black-card);
@@ -121,7 +123,7 @@ nav{
   display:none;
   font-size:.74rem;color:var(--error);
   margin-top:.4rem;
-  display:flex;align-items:center;gap:.3rem;
+  align-items:center;gap:.3rem;
 }
 .ferr.visible{display:flex;}
 
@@ -213,6 +215,7 @@ nav{
 .forgot-row a:hover{color:var(--green);}
 
 @media(max-width:480px){
+  body{padding:88px 1rem 1.5rem;}
   .auth-card{padding:1.8rem 1.4rem;}
   .name-row{grid-template-columns:1fr;}
 }
@@ -221,49 +224,44 @@ nav{
 <body>
 
 <nav>
-  <a href="main.html" class="logo">Mod<span>Living</span></a>
-  <a href="main.html" class="nav-back">← Back to Home</a>
+  <a href="index (1).html" class="logo">Mod<span>Living</span></a>
+  <a href="index (1).html" class="nav-back">← Back to Home</a>
 </nav>
 
 <div class="auth-wrap">
   <div class="auth-card">
 
-    <!-- Tabs to switch Login ↔ Signup -->
+    <!-- Tabs to switch Login and Signup -->
     <div class="form-tabs">
-      <button class="form-tab active" onclick="switchTab('login')" id="tab-login">Login</button>
-      <button class="form-tab" onclick="switchTab('signup')" id="tab-signup">Sign Up</button>
+      <button type="button" class="form-tab active" onclick="switchTab('login')" id="tab-login">Login</button>
+      <button type="button" class="form-tab" onclick="switchTab('signup')" id="tab-signup">Sign Up</button>
     </div>
 
-    <!-- ========================
-         LOGIN PANEL
-         ======================== -->
     <div class="form-panel active" id="panel-login">
       <h2 class="auth-title">Welcome back</h2>
       <p class="auth-sub">Log in to access your saved properties and enquiries.</p>
 
-      <div class="success-banner" id="login-success">✅ Login successful! Redirecting…</div>
+      <div class="success-banner" id="login-success">Login successful! Redirecting...</div>
 
       <div class="fg">
         <label for="l-email">Email Address</label>
         <div class="input-wrap">
-          <span class="i-icon">✉️</span>
           <input type="email" id="l-email" placeholder="you@example.com" oninput="clearErr('l-email','l-email-err')"/>
         </div>
-        <div class="ferr" id="l-email-err">⚠ Please enter a valid email address.</div>
+        <div class="ferr" id="l-email-err">Please enter a valid email address.</div>
       </div>
 
       <div class="fg">
         <label for="l-pass">Password</label>
         <div class="input-wrap">
-          <span class="i-icon">🔒</span>
           <input type="password" id="l-pass" placeholder="Enter your password" oninput="clearErr('l-pass','l-pass-err')"/>
-          <button class="eye-btn" type="button" onclick="toggleEye('l-pass',this)" aria-label="Show/hide password">👁</button>
+          <button class="eye-btn" type="button" onclick="toggleEye('l-pass',this)" aria-label="Show or hide password">Show</button>
         </div>
-        <div class="ferr" id="l-pass-err">⚠ Password must be at least 6 characters.</div>
+        <div class="ferr" id="l-pass-err">Password must be at least 6 characters.</div>
       </div>
 
       <div class="forgot-row">
-        <a href="#">Forgot password?</a>
+        <a href="#" onclick="showToast('Password reset coming soon!'); return false;">Forgot password?</a>
       </div>
 
       <div class="check-row">
@@ -271,73 +269,64 @@ nav{
         <label for="l-remember">Remember me on this device</label>
       </div>
 
-      <button class="btn-submit" onclick="submitLogin()">Login →</button>
+      <button type="button" class="btn-submit" onclick="submitLogin()">Login</button>
 
       <div class="divider"><span>or</span></div>
       <button class="btn-google" onclick="showToast('Google sign-in coming soon!')">
-        <span>🌐</span> Continue with Google
+        Continue with Google
       </button>
 
-      <br/><br/>
       <div class="switch-row">
-        New to Mod Living? <a href="#" onclick="switchTab('signup')">Create an account</a>
+        New to Mod Living? <a href="#" onclick="switchTab('signup'); return false;">Create an account</a>
       </div>
     </div>
 
-    <!-- ========================
-         SIGNUP PANEL
-         ======================== -->
     <div class="form-panel" id="panel-signup">
       <h2 class="auth-title">Create account</h2>
       <p class="auth-sub">Join Mod Living to save listings and connect with agents.</p>
 
-      <div class="success-banner" id="signup-success">🎉 Account created! Welcome to Mod Living.</div>
+      <div class="success-banner" id="signup-success">Account created! Welcome to Mod Living.</div>
 
       <div class="name-row">
         <div class="fg">
           <label for="s-first">First Name</label>
           <div class="input-wrap">
-            <span class="i-icon">👤</span>
             <input type="text" id="s-first" placeholder="First" oninput="clearErr('s-first','s-first-err')"/>
           </div>
-          <div class="ferr" id="s-first-err">⚠ Required.</div>
+          <div class="ferr" id="s-first-err">First name is required.</div>
         </div>
+
         <div class="fg">
           <label for="s-last">Last Name</label>
           <div class="input-wrap">
-            <span class="i-icon">👤</span>
             <input type="text" id="s-last" placeholder="Last" oninput="clearErr('s-last','s-last-err')"/>
           </div>
-          <div class="ferr" id="s-last-err">⚠ Required.</div>
+          <div class="ferr" id="s-last-err">Last name is required.</div>
         </div>
       </div>
 
       <div class="fg">
         <label for="s-email">Email Address</label>
         <div class="input-wrap">
-          <span class="i-icon">✉️</span>
           <input type="email" id="s-email" placeholder="you@example.com" oninput="clearErr('s-email','s-email-err')"/>
         </div>
-        <div class="ferr" id="s-email-err">⚠ Please enter a valid email address.</div>
+        <div class="ferr" id="s-email-err">Please enter a valid email address.</div>
       </div>
 
       <div class="fg">
         <label for="s-phone">Phone Number</label>
         <div class="input-wrap">
-          <span class="i-icon">📱</span>
-          <input type="tel" id="s-phone" placeholder="+91 98765 43210" maxlength="15" oninput="clearErr('s-phone','s-phone-err')"/>
+          <input type="tel" id="s-phone" placeholder="+91 98765 43210" maxlength="17" oninput="clearErr('s-phone','s-phone-err')"/>
         </div>
-        <div class="ferr" id="s-phone-err">⚠ Enter a valid 10-digit phone number.</div>
+        <div class="ferr" id="s-phone-err">Enter a valid 10-digit phone number.</div>
       </div>
 
       <div class="fg">
         <label for="s-pass">Password</label>
         <div class="input-wrap">
-          <span class="i-icon">🔒</span>
           <input type="password" id="s-pass" placeholder="Create a strong password" oninput="checkStrength(this.value);clearErr('s-pass','s-pass-err')"/>
-          <button class="eye-btn" type="button" onclick="toggleEye('s-pass',this)" aria-label="Show/hide password">👁</button>
+          <button class="eye-btn" type="button" onclick="toggleEye('s-pass',this)" aria-label="Show or hide password">Show</button>
         </div>
-        <!-- Password strength bar -->
         <div class="strength-wrap">
           <div class="strength-bars">
             <div class="sb" id="sb1"></div>
@@ -347,34 +336,32 @@ nav{
           </div>
           <span class="strength-label" id="strength-label">Enter a password</span>
         </div>
-        <div class="ferr" id="s-pass-err">⚠ Password must be at least 8 characters.</div>
+        <div class="ferr" id="s-pass-err">Password must be at least 8 characters.</div>
       </div>
 
       <div class="fg">
         <label for="s-confirm">Confirm Password</label>
         <div class="input-wrap">
-          <span class="i-icon">🔐</span>
           <input type="password" id="s-confirm" placeholder="Re-enter your password" oninput="clearErr('s-confirm','s-confirm-err')"/>
         </div>
-        <div class="ferr" id="s-confirm-err">⚠ Passwords do not match.</div>
+        <div class="ferr" id="s-confirm-err">Passwords do not match.</div>
       </div>
 
       <div class="check-row">
-        <input type="checkbox" id="s-terms"/>
-        <label for="s-terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+        <input type="checkbox" id="s-terms" onchange="document.getElementById('s-terms-err').classList.remove('visible')"/>
+        <label for="s-terms">I agree to the <a href="#" onclick="showToast('Terms page coming soon!'); return false;">Terms of Service</a> and <a href="#" onclick="showToast('Privacy page coming soon!'); return false;">Privacy Policy</a></label>
       </div>
-      <div class="ferr" id="s-terms-err" style="margin-top:-.8rem;margin-bottom:.8rem;">⚠ You must accept the terms to continue.</div>
+      <div class="ferr" id="s-terms-err" style="margin-top:-.8rem;margin-bottom:.8rem;">You must accept the terms to continue.</div>
 
-      <button class="btn-submit" onclick="submitSignup()">Create Account →</button>
+      <button type="button" class="btn-submit" onclick="submitSignup()">Create Account</button>
 
       <div class="divider"><span>or</span></div>
       <button class="btn-google" onclick="showToast('Google sign-up coming soon!')">
-        <span>🌐</span> Continue with Google
+        Continue with Google
       </button>
 
-      <br/><br/>
       <div class="switch-row">
-        Already have an account? <a href="#" onclick="switchTab('login')">Log in</a>
+        Already have an account? <a href="#" onclick="switchTab('login'); return false;">Log in</a>
       </div>
     </div>
 
@@ -417,19 +404,21 @@ function toggleEye(inputId, btn) {
   // Toggle between password and text type
   if (input.type === 'password') {
     input.type = 'text';       // reveals the password
-    btn.textContent = '🙈';   // change icon
+    btn.textContent = 'Hide';
   } else {
     input.type = 'password';  // hides the password
-    btn.textContent = '👁';
+    btn.textContent = 'Show';
   }
-} 
+}
 
 // =============================================
 // CLEAR error on input
 // =============================================
 function clearErr(inputId, errId) {
-  document.getElementById(inputId).classList.remove('error');
-  document.getElementById(errId).classList.remove('visible');
+  const input = document.getElementById(inputId);
+  const err = document.getElementById(errId);
+  if (input) input.classList.remove('error');
+  if (err) err.classList.remove('visible');
 }
 
 // =============================================
@@ -469,21 +458,42 @@ function validateField(id, errId, checkFn) {
   return valid;
 }
 
+function isValidEmail(value) {
+  const email = value.trim();
+  const emailPattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+  if (!emailPattern.test(email)) return false;
+
+  const validEndings = ['com', 'in', 'org', 'net', 'edu', 'gov', 'co', 'io'];
+  const ending = email.split('.').pop().toLowerCase();
+  return validEndings.includes(ending);
+}
+
+function getPhoneDigits(value) {
+  const digits = value.replace(/\D/g, '');
+  if (digits.length === 12 && digits.startsWith('91')) {
+    return digits.slice(2);
+  }
+  return digits;
+}
+
 // =============================================
 // LOGIN FORM VALIDATION
 // =============================================
 function submitLogin() {
   const emailOk = validateField('l-email', 'l-email-err',
-    v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
+    isValidEmail);
   const passOk  = validateField('l-pass',  'l-pass-err',
     v => v.length >= 6);
 
   if (emailOk && passOk) {
+    ModLivingAuth.login({
+      email: document.getElementById('l-email').value.trim()
+    }, document.getElementById('l-remember').checked);
     // All valid – show success (in real app, send to server)
     document.getElementById('login-success').classList.add('visible');
     // Simulate redirect after 1.5s
     setTimeout(() => {
-      window.location.href = 'main.html';
+      ModLivingAuth.redirectAfterLogin();
     }, 1500);
   }
 }
@@ -494,9 +504,9 @@ function submitLogin() {
 function submitSignup() {
   const firstOk   = validateField('s-first',   's-first-err',   v => v.trim().length > 0);
   const lastOk    = validateField('s-last',    's-last-err',    v => v.trim().length > 0);
-  const emailOk   = validateField('s-email',   's-email-err',   v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
-  // Phone: must be 10 digits (after stripping spaces/+/-)
-  const phoneOk   = validateField('s-phone',   's-phone-err',   v => /^[6-9]\d{9}$/.test(v.replace(/[\s\+\-]/g,'')));
+  const emailOk   = validateField('s-email',   's-email-err',   isValidEmail);
+  // Phone: accept 10 digits, or +91 followed by 10 digits.
+  const phoneOk   = validateField('s-phone',   's-phone-err',   v => /^[6-9]\d{9}$/.test(getPhoneDigits(v)));
   const passOk    = validateField('s-pass',    's-pass-err',    v => v.length >= 8);
   // Confirm password must match
   const confirmOk = validateField('s-confirm', 's-confirm-err', v => v === document.getElementById('s-pass').value && v.length > 0);
@@ -507,6 +517,10 @@ function submitSignup() {
   else termsErr.classList.remove('visible');
 
   if (firstOk && lastOk && emailOk && phoneOk && passOk && confirmOk && termsChecked) {
+    ModLivingAuth.login({
+      email: document.getElementById('s-email').value.trim(),
+      name: `${document.getElementById('s-first').value.trim()} ${document.getElementById('s-last').value.trim()}`.trim()
+    }, true);
     document.getElementById('signup-success').classList.add('visible');
     // Clear form
     ['s-first','s-last','s-email','s-phone','s-pass','s-confirm'].forEach(id => {
@@ -514,6 +528,9 @@ function submitSignup() {
     });
     document.getElementById('s-terms').checked = false;
     checkStrength(''); // reset strength bar
+    setTimeout(() => {
+      ModLivingAuth.redirectAfterLogin();
+    }, 1500);
   }
 }
 
