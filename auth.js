@@ -2,7 +2,7 @@ const ModLivingAuth = (() => {
   const LOCAL_KEY = 'modLivingAuth';
   const SESSION_KEY = 'modLivingSessionAuth';
   const ENTRY_KEY = 'modLivingEntryLoginShown';
-  const LOGIN_PAGE = 'login.html';
+  const LOGIN_PAGE = 'index.html';
   const HOME_PAGE = 'main.html';
 
   function safeJson(value) {
