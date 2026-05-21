@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 
 <html lang="en">
@@ -697,9 +697,9 @@ footer{background:var(--black-mid) !important;color:var(--gray);border-top:1px s
 <body>
 
 <nav>
-  <a href="main.html" class="logo">Mod<span>Living</span></a>
+  <a href="index (1).html" class="logo">Mod<span>Living</span></a>
   <ul class="nav-links" id="navLinks">
-    <li><a href="main.html">Home</a></li>
+    <li><a href="index (1).html">Home</a></li>
     <li><a href="properties.html" class="active">Properties</a></li>
     <li><a href="owners.html">Owners</a></li>
     <li><a href="about.html">About</a></li>
@@ -717,7 +717,6 @@ footer{background:var(--black-mid) !important;color:var(--gray);border-top:1px s
 
 <div class="page-hero">
   <div class="page-hero-inner">
-    <div class="breadcrumb"><a href="main.html">Home</a> / Properties</div>
     <h1>Browse All <em style="font-family:'Cormorant Garamond',serif;color:var(--green);font-style:italic;">Properties</em></h1>
     <p>Explore our full collection of curated listings — from modern studios to luxury estates. Filter by type, budget, and location.</p>
   </div>
@@ -729,7 +728,7 @@ footer{background:var(--black-mid) !important;color:var(--gray);border-top:1px s
         <select id="typeInput"><option value="">Any Type</option><option>Apartment</option><option>House</option><option>Villa</option><!--<option>Studio</option><option>Penthouse</option>--></select>
     <!-- </div>
     <div class="sf"><label>Budget</label>
-        <select id="budgetInput"><option value="">Any Budget</option><option>Under ₹ 2 lakh</option><option>₹ 20 lakh  &ndash; ₹ 60 lakh</option><option>₹ 60 lakh &ndash; ₹ 1.5 crore </option><option>₹ 1.5 crore  &ndash; ₹ 3 crore</option></select>
+        <select id="budgetInput"><option value="">Any Budget</option><option>Under ₹ 2 lakh</option><option>₹ 20 lakh  &ndash; ₹ 60 lakh</option><option>₹ 60 lakh  &ndash; ₹ 1.5 crore </option><option>₹ 1.5 crore  &ndash; ₹ 3 crore</option></select>
     </div>
     <div class="sf"><label>Bedrooms</label>
       <select id="bedsInput"><option value="">Any</option><option>1+</option><option>2+</option><option>3+</option><option>4+</option></select>
@@ -750,27 +749,27 @@ footer{background:var(--black-mid) !important;color:var(--gray);border-top:1px s
   </div>
 
   <div class="prop-grid" id="propGrid">
-    <div class="p-card reveal" data-cat="sale" onclick="openModal(0)">
+    <div class="p-card reveal" data-cat="sale" onclick="location.href='details.html?id=0'">
       <div class="p-img"><img src="images/loft.jpeg" alt="The Heritage Floor" style="width:100%;height:100%;object-fit:cover;" /><span class="p-pill pill-s">For Sale</span></div>
       <div class="p-body"><div class="p-price">₹640,000</div><div class="p-name">The Heritage Floor</div><div class="p-loc"> Sector 10, Chandigarh</div><div class="p-specs"><span class="spec"> 2 BHK</span><span class="spec"> 2 Bath</span><span class="spec"> 1,250 sqft</span></div></div>
     </div>
-    <div class="p-card reveal d1" data-cat="rent new" onclick="openModal(1)">
+    <div class="p-card reveal d1" data-cat="rent new" onclick="location.href='details.html?id=1'">
       <div class="p-img"><img src="images/rent_1.jpeg" alt="Saffron Metro Suites" style="width:100%;height:100%;object-fit:cover;" /><span class="p-pill pill-r">For Rent</span></div>
       <div class="p-body"><div class="p-price">₹3,200 <sub>/mo</sub></div><div class="p-name">Saffron Metro Suites</div><div class="p-loc"> Phase 3B2, Mohali</div><div class="p-specs"><span class="spec"> 3 BHK</span><span class="spec"> 3 Bath</span><span class="spec"> 1,650 sqft</span></div></div>
     </div>
-    <div class="p-card reveal d2" data-cat="rent new luxury" onclick="openModal(2)">
+    <div class="p-card reveal d2" data-cat="rent new luxury" onclick="location.href='details.html?id=2'">
       <div class="p-img"><img src="images/rent_2.jpeg" alt="The Maple Studio" style="width:100%;height:100%;object-fit:cover;" /><span class="p-pill pill-r">For Rent</span></div>
       <div class="p-body"><div class="p-price">₹1,250,000</div><div class="p-name">The Maple Studio</div><div class="p-loc"> Sector 35, Chandigarh</div><div class="p-specs"><span class="spec"> 1 BHK</span><span class="spec"> 1 Bath</span><span class="spec"> 650 sqft</span></div></div>
     </div>
-    <div class="p-card reveal" data-cat="sale" onclick="openModal(3)">
+    <div class="p-card reveal" data-cat="sale" onclick="location.href='details.html?id=3'">
       <div class="p-img"><img src="images/sale_3.jpeg" alt="Eden Garden Estate" style="width:100%;height:100%;object-fit:cover;" /><span class="p-pill pill-s">For Sale</span></div>
       <div class="p-body"><div class="p-price">₹1,800 <sub>/mo</sub></div><div class="p-name">Eden Garden Estate</div><div class="p-loc"> Sector 8, Chandigarh</div><div class="p-specs"><span class="spec"> 5 BHK</span><span class="spec"> 5 Bath</span><span class="spec"> 4,200 sqft</span></div></div>
     </div>
-    <div class="p-card reveal d1" data-cat="sale" onclick="openModal(4)">
+    <div class="p-card reveal d1" data-cat="sale" onclick="location.href='details.html?id=4'">
       <div class="p-img"><img src="images/sale_4.jpeg" alt="Signature Heights" style="width:100%;height:100%;object-fit:cover;" /><span class="p-pill pill-s">For Sale</span></div>
       <div class="p-body"><div class="p-price">₹425,000</div><div class="p-name">Signature Heights</div><div class="p-loc"> Sector 70, Mohali</div><div class="p-specs"><span class="spec"> 4 BHK</span><span class="spec"> 4 Bath</span><span class="spec"> 2,600 sqft</span></div></div>
     </div>
-    <div class="p-card reveal d2" data-cat="sale new luxury" onclick="openModal(5)">
+    <div class="p-card reveal d2" data-cat="sale new luxury" onclick="location.href='details.html?id=5'">
       <div class="p-img"><img src="images/villa.jpeg" alt="The Zenith Villa" style="width:100%;height:100%;object-fit:cover;" /><span class="p-pill pill-s">For Sale</span></div>
       <div class="p-body"><div class="p-price">₹890,000</div><div class="p-name">The Zenith Villa</div><div class="p-loc"> Aerocity, Mohali</div><div class="p-specs"><span class="spec"> 4 BHK</span><span class="spec"> 5 Bath</span><span class="spec"> 3,800 sqft</span></div></div>
     </div>
@@ -781,7 +780,7 @@ footer{background:var(--black-mid) !important;color:var(--gray);border-top:1px s
   <div class="f-wrap">
     <div class="f-top">
       <div class="f-brand">
-        <a href="main.html" class="logo">Mod<span>Living</span></a>
+        <a href="index (1).html" class="logo">Mod<span>Living</span></a>
         <p>Curating modern living spaces for people who believe where you live shapes how you live.</p>
       </div>
       <div class="f-explore">
@@ -810,29 +809,30 @@ footer{background:var(--black-mid) !important;color:var(--gray);border-top:1px s
 
 
 <script>
+// Store property data used by filters and detail pages
 const props=[
-  {title:'The Heritage Floor',price:'₹640,000',loc:'Sector 10, Chandigarh',beds:'2 BHK',baths:2,sqft:'1,250',cls:'ci1',icon:''},
-  {title:'Saffron Metro Suites',price:'₹3,200/mo',loc:'Phase 3B2, Mohali',beds:'3 BHK',baths:3,sqft:'1,650',cls:'ci2',icon:''},
-  {title:'The Maple Studio',price:'₹1,250,000',loc:'Sector 35, Chandigarh',beds:'1 BHK',baths:1,sqft:'650',cls:'ci3',icon:''},
-  {title:'Eden Garden Estate',price:'₹1,800/mo',loc:'Sector 8, Chandigarh',beds:'5 BHK',baths:5,sqft:'4,200',cls:'ci4',icon:''},
-  {title:'Signature Heights',price:'₹425,000',loc:'Sector 70, Mohali',beds:'4 BHK',baths:4,sqft:'2,600',cls:'ci5',icon:''},
-  {title:'The Zenith Villa',price:'₹890,000',loc:'Aerocity, Mohali',beds:'4 BHK',baths:5,sqft:'3,800',cls:'ci6',icon:''},
+  {title:'The Heritage Floor',price:'₹640,000',loc:'Sector 10, Chandigarh',beds:'2 BHK',baths:2,sqft:'1,250',cls:'ci1',icon:'',type:'Independent Floor',status:'Ready to Move',furnished:'Semi-Furnished',facing:'North-East',floor:'2 of 4',transaction:'Resale',developer:'Keystone Properties',description:'A quiet heritage-style floor set near Sector 10 parks and daily conveniences. The layout keeps the living room airy, with two practical bedrooms and a balcony suited for morning light.'},
+  {title:'Saffron Metro Suites',price:'₹3,200/mo',loc:'Phase 3B2, Mohali',beds:'3 BHK',baths:3,sqft:'1,650',cls:'ci2',icon:'',type:'Apartment',status:'Ready to Move',furnished:'Furnished',facing:'East',floor:'6 of 12',transaction:'New',developer:'Saffron Buildwell',description:'A furnished rental apartment with a clean, modern plan close to market streets and transit routes. The suite includes generous bedrooms, attached baths, and a bright living area for everyday comfort.'},
+  {title:'The Maple Studio',price:'₹1,250,000',loc:'Sector 35, Chandigarh',beds:'1 BHK',baths:1,sqft:'650',cls:'ci3',icon:'',type:'Studio',status:'Under Construction',furnished:'Unfurnished',facing:'South-East',floor:'3 of 7',transaction:'New',developer:'Maple Urban Homes',description:'A compact studio residence designed for professionals who want a central Chandigarh address. The plan uses its footprint efficiently, with a flexible living-sleeping zone and scope for custom interiors.'},
+  {title:'Eden Garden Estate',price:'₹1,800/mo',loc:'Sector 8, Chandigarh',beds:'5 BHK',baths:5,sqft:'4,200',cls:'ci4',icon:'',type:'Villa',status:'Ready to Move',furnished:'Furnished',facing:'North',floor:'Ground',transaction:'Resale',developer:'Eden Estates',description:'A spacious estate home with garden frontage in one of Chandigarh’s most established neighborhoods. It offers multiple ensuite bedrooms, formal and family living areas, and a calm setting for long-term stays.'},
+  {title:'Signature Heights',price:'₹425,000',loc:'Sector 70, Mohali',beds:'4 BHK',baths:4,sqft:'2,600',cls:'ci5',icon:'',type:'Penthouse',status:'Ready to Move',furnished:'Semi-Furnished',facing:'West',floor:'10 of 10',transaction:'Resale',developer:'Signature Developers',description:'A top-floor residence with broad internal spaces and open views across Sector 70. The semi-furnished setup gives buyers a ready base while leaving room to personalize finishes and furniture.'},
+  {title:'The Zenith Villa',price:'₹890,000',loc:'Aerocity, Mohali',beds:'4 BHK',baths:5,sqft:'3,800',cls:'ci6',icon:'',type:'Villa',status:'Under Construction',furnished:'Unfurnished',facing:'South-West',floor:'Ground + 1',transaction:'New',developer:'Zenith Habitat',description:'A new villa in Aerocity planned around larger rooms, private outdoor space, and easy airport connectivity. The home is well suited for families seeking a contemporary build with room to grow.'},
 ];
+
+// Reveal cards as they enter the viewport
 const revObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revObs.unobserve(e.target);}});},{threshold:0.1});
+
+// Attach reveal observation to listing cards
 document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
+
+// Filter property cards by category
 function filterProps(cat,btn){document.querySelectorAll('.pf').forEach(b=>b.classList.remove('active'));btn.classList.add('active');let count=0;document.querySelectorAll('.p-card').forEach(c=>{const cats=c.dataset.cat||'';const show=(cat==='all'||cats.includes(cat));c.style.display=show?'':'none';if(show)count++;});document.getElementById('resultsCount').textContent=`Showing ${count} properties`;}
+
+// Toggle the saved state for a property card
 function toggleSave(btn){btn.classList.toggle('saved');btn.textContent=btn.classList.contains('saved')?'?':'?';btn.style.color=btn.classList.contains('saved')?'var(--green)':'';}
-function openModal(idx){const p=props[idx];document.getElementById('m-title').textContent=p.title;document.getElementById('m-price').textContent=p.price;document.getElementById('m-loc').textContent=p.loc;document.getElementById('m-beds').textContent=p.beds;document.getElementById('m-baths').textContent=p.baths;document.getElementById('m-sqft').textContent=p.sqft;const img=document.getElementById('m-img');img.className='m-img '+p.cls;img.textContent=p.icon;document.getElementById('propModal').classList.add('open');document.body.style.overflow='hidden';}
-function closeModal(){document.getElementById('propModal').classList.remove('open');document.body.style.overflow='';}
-function closeModalOutside(e){if(e.target.id==='propModal')closeModal();}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+// Show the placeholder search action
 function doSearch(){alert('Search functionality — connect to your backend!');}
 </script>
 </body>
 </html>
-
-
-
-
-
-
