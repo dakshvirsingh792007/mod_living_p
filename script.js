@@ -1,4 +1,4 @@
-﻿// script.js for Mod Living - merged from all HTML files
+// script.js for Mod Living - merged from all HTML files
 
 // JavaScript from all HTML files will be placed here.
 // (No JavaScript was detected in the provided HTML summaries, but this file is ready for your scripts.)
@@ -38,9 +38,9 @@ function submitContact(){
 // ...JS from emi-calculator.html...
 // End of scripts from emi-calculator.html
 
-// Scripts from main.html
-// ...JS from main.html...
-// End of scripts from main.html
+// Scripts from index (1).html
+// ...JS from index (1).html...
+// End of scripts from index (1).html
 
 // Scripts from owners.html
 // ...JS from owners.html...
