@@ -1,4 +1,4 @@
-const ModLivingAuth = (() => {
+﻿const ModLivingAuth = (() => {
   const LOCAL_KEY = 'modLivingAuth';
   const SESSION_KEY = 'modLivingSessionAuth';
   const ENTRY_KEY = 'modLivingEntryLoginShown';

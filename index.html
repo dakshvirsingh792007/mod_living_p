@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
@@ -272,9 +272,14 @@ nav{
       <button type="button" class="btn-submit" onclick="submitLogin()">Login</button>
 
       <div class="divider"><span>or</span></div>
-      <button class="btn-google" onclick="showToast('Google sign-in coming soon!')">
-        Continue with Google
-      </button>
+      <div class="g_id_signin"
+           data-type="standard"
+           data-size="large"
+           data-theme="outline"
+           data-text="sign_in_with"
+           data-shape="pill"
+           style="display: flex; justify-content: center; margin-bottom: 1.4rem;">
+      </div>
 
       <div class="switch-row">
         New to Mod Living? <a href="#" onclick="switchTab('signup'); return false;">Create an account</a>
@@ -356,9 +361,14 @@ nav{
       <button type="button" class="btn-submit" onclick="submitSignup()">Create Account</button>
 
       <div class="divider"><span>or</span></div>
-      <button class="btn-google" onclick="showToast('Google sign-up coming soon!')">
-        Continue with Google
-      </button>
+      <div class="g_id_signin"
+           data-type="standard"
+           data-size="large"
+           data-theme="outline"
+           data-text="signup_with"
+           data-shape="pill"
+           style="display: flex; justify-content: center; margin-bottom: 1.4rem;">
+      </div>
 
       <div class="switch-row">
         Already have an account? <a href="#" onclick="switchTab('login'); return false;">Log in</a>
@@ -556,5 +566,23 @@ document.addEventListener('keydown', e => {
   }
 });
 </script>
+<div id="g_id_onload"
+     data-client_id="453096410101-02b5r08l0ier4t972q823niir57ejtd9.apps.googleusercontent.com"
+     data-callback="handleCredentialResponse">
+</div>
+
+<script>
+function handleCredentialResponse(response) {
+    console.log("Encoded JWT ID token: " + response.credential);
+
+    // Save login session
+    localStorage.setItem("loggedIn", "true");
+
+    // Redirect after login
+    window.location.href = "main.html";
+}
+</script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+
 </body>
 </html>

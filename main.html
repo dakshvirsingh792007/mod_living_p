@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
@@ -8,6 +8,11 @@
 <link rel="stylesheet" href="styles.css"/>
 <script src="auth.js" defer></script>
 
+<script>
+if(localStorage.getItem("loggedIn") !== "true"){
+    window.location.href = "index.html";
+}
+</script>
 <style>
 :root{
   --black:#080c0a;
@@ -163,6 +168,7 @@ footer{background:var(--charcoal);color:rgba(255,255,255,.65);padding:1.4rem 5% 
   .s-fields{grid-template-columns:1fr;}
 }
 
+/* === DARK THEME GLOBAL OVERRIDES === */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{font-family:'Jost',sans-serif;background:var(--black);color:var(--white);overflow-x:hidden;}
@@ -675,10 +681,9 @@ footer{background:var(--black-mid) !important;color:var(--gray);border-top:1px s
     <li><a href="contact.html">Contact</a></li>
     <li><a href="emi-calculator.html">EMI Calc</a></li>
   </ul>
-  <!-- <div class="nav-right">
-    <a href="owners.html" class="btn btn-ghost">List Property</a>
-    <a href="properties.html" class="btn btn-fill">Find Home</a>
-  </div> -->
+  <div class="nav-right">
+    <button class="btn btn-ghost" onclick="logout()" style="padding: .5rem 1rem;">Logout</button>
+  </div>
   <button class="mobile-menu-btn" onclick="toggleMenu()" id="menuBtn">
     <span></span><span></span><span></span>
   </button>
@@ -851,6 +856,15 @@ function closeModal(){document.getElementById('propModal').classList.remove('ope
 function closeModalOutside(e){if(e.target.id==='propModal')closeModal();}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 function toggleMenu(){const nl=document.getElementById('navLinks');nl.classList.toggle('open');}
+</script>
+<script>
+function logout(){
+    localStorage.removeItem("loggedIn");
+    if (typeof google !== 'undefined' && google.accounts && google.accounts.id) {
+        google.accounts.id.disableAutoSelect();
+    }
+    window.location.href = "index.html";
+}
 </script>
 </body>
 </html>
