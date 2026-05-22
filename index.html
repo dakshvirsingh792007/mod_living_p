@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Login – Mod Living</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="google-auth.js" defer></script>
 <script src="auth.js" defer></script>
 <style>
 /* ===== ROOT VARS ===== */
@@ -272,7 +274,7 @@ nav{
       <button type="button" class="btn-submit" onclick="submitLogin()">Login</button>
 
       <div class="divider"><span>or</span></div>
-      <button class="btn-google" onclick="showToast('Google sign-in coming soon!')">
+      <button type="button" class="btn-google" onclick="googleLogin()">
         Continue with Google
       </button>
 
@@ -356,7 +358,7 @@ nav{
       <button type="button" class="btn-submit" onclick="submitSignup()">Create Account</button>
 
       <div class="divider"><span>or</span></div>
-      <button class="btn-google" onclick="showToast('Google sign-up coming soon!')">
+      <button type="button" class="btn-google" onclick="googleLogin()">
         Continue with Google
       </button>
 
