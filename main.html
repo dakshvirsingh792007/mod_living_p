@@ -662,6 +662,31 @@ footer{background:var(--black-mid) !important;color:var(--gray);border-top:1px s
 .reveal{opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease;}
 .reveal.visible{opacity:1;transform:none;}
 
+/* Responsive overrides for modal specifications grid */
+@media (min-width: 500px) {
+  .m-specs {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 500px) {
+  .modal {
+    padding: 1.5rem;
+  }
+  .m-specs {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  .ms {
+    padding: 0.6rem 0.4rem;
+  }
+  .ms-val {
+    font-size: 1.05rem;
+  }
+  .ms-key {
+    font-size: 0.65rem;
+  }
+}
 </style>
 </head>
 <body>
@@ -847,13 +872,62 @@ let activeTab='buy';
 function setTab(btn,tab){document.querySelectorAll('.s-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');activeTab=tab;document.getElementById('searchOut').style.display='none';}
 function doSearch(){const loc=document.getElementById('locInput').value.trim();const type=document.getElementById('typeInput').value;const budget=document.getElementById('budgetInput').value;const out=document.getElementById('searchOut');const label=activeTab==='buy'?'purchase':activeTab==='rent'?'rental':'valuation';const parts=[loc&&`in <strong>${loc}</strong>`,type&&`type: <strong>${type}</strong>`,budget&&`budget: <strong>${budget}</strong>`].filter(Boolean);if(!parts.length){out.innerHTML='\uD83D\uDD0D Please enter at least one search criterion.';out.style.display='block';return;}out.innerHTML=`\u2705 Showing ${label} results ${parts.join(', ')}. <a href="properties.html" style="color:var(--green);font-weight:600;text-decoration:underline;">View listings &rarr;</a>`;out.style.display='block';}
 function toggleSave(btn){btn.classList.toggle('saved');btn.textContent=btn.classList.contains('saved')?'\u2665':'\u2661';btn.style.color=btn.classList.contains('saved')?'var(--green)':'';}
-function openModal(idx){const p=props[idx];document.getElementById('m-title').textContent=p.title;document.getElementById('m-price').textContent=p.price;document.getElementById('m-loc').textContent='\uD83D\uDCCD '+p.loc;document.getElementById('m-beds').textContent=p.beds;document.getElementById('m-baths').textContent=p.baths;document.getElementById('m-sqft').textContent=p.sqft;const img=document.getElementById('m-img');img.className='m-img '+p.cls;img.textContent=p.icon;document.getElementById('propModal').classList.add('open');document.body.style.overflow='hidden';}
-function closeModal(){document.getElementById('propModal').classList.remove('open');document.body.style.overflow='';}
+function ensureModalHtml() {
+  if (document.getElementById('propModal')) return;
+  const modalBg = document.createElement('div');
+  modalBg.className = 'modal-bg';
+  modalBg.id = 'propModal';
+  modalBg.setAttribute('onclick', 'closeModalOutside(event)');
+  modalBg.innerHTML = `
+    <div class="modal">
+      <div class="m-head">
+        <h3 id="m-title"></h3>
+        <button class="m-close" onclick="closeModal()">&#x2715;</button>
+      </div>
+      <div class="m-img" id="m-img"></div>
+      <div class="m-price" id="m-price"></div>
+      <div class="m-loc" id="m-loc"></div>
+      <div class="m-specs" id="m-specs">
+        <div class="ms"><div class="ms-val" id="m-beds"></div><div class="ms-key">Beds</div></div>
+        <div class="ms"><div class="ms-val" id="m-baths"></div><div class="ms-key">Baths</div></div>
+        <div class="ms"><div class="ms-val" id="m-sqft"></div><div class="ms-key">Sqft</div></div>
+      </div>
+      <p class="m-desc" id="m-desc" style="font-size:.84rem; color:var(--gray); line-height:1.7; margin-bottom:1.2rem; display:none;"></p>
+      <div class="m-btns">
+        <button class="mb1" id="m-btn-details">View Details</button>
+        <button class="mb2" onclick="closeModal()">Close</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modalBg);
+}
+function openModal(idx){
+  ensureModalHtml();
+  const p=props[idx];
+  document.getElementById('m-title').textContent=p.title;
+  document.getElementById('m-price').textContent=p.price;
+  document.getElementById('m-loc').textContent='📍 '+p.loc;
+  document.getElementById('m-beds').textContent=p.beds;
+  document.getElementById('m-baths').textContent=p.baths + ' Bath';
+  document.getElementById('m-sqft').textContent=p.sqft + ' sqft';
+  const img=document.getElementById('m-img');
+  img.className='m-img '+p.cls;
+  img.textContent=p.icon;
+
+  const detailsBtn = document.getElementById('m-btn-details');
+  if (detailsBtn) {
+    detailsBtn.onclick = () => {
+      window.location.href = `details.html?id=${idx}`;
+    };
+  }
+
+  document.getElementById('propModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){const m=document.getElementById('propModal'); if(m) m.classList.remove('open');document.body.style.overflow='';}
 function closeModalOutside(e){if(e.target.id==='propModal')closeModal();}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 function toggleMenu(){const nl=document.getElementById('navLinks');nl.classList.toggle('open');}
 </script>
 </body>
 </html>
-
-
