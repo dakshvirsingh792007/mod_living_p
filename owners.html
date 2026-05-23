@@ -6,6 +6,7 @@
 <title>For Owners — Mod Living</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <script src="auth.js" defer></script>
+<script src="script.js" defer></script>
 <style>
 :root{
   --black:#080c0a;
@@ -113,10 +114,35 @@ section{padding:5rem 5%;}
 .plan-features li::before{content: '✓'; font-weight:700;color:var(--green);flex-shrink:0;}
 .plan.featured .plan-features li::before{color:var(--green);}
 .plan-cta{width:100%;padding:.9rem;border-radius:8px;font-family:'Jost',sans-serif;font-weight:600;font-size:.86rem;cursor:pointer;transition:all .2s;letter-spacing:.3px;text-align:center;display:block;text-decoration:none;}
-.cta-outline{border:1.5px solid var(--green);color:var(--green);background:transparent;}
-.cta-outline:hover{background:var(--green);color:var(--black);font-weight:700;}
-.cta-white{background:var(--gradient-green);color:var(--black);border:none;font-weight:700;}
-.cta-white:hover{background:var(--black-mid);}
+.cta-outline {
+  border: 1.5px solid var(--green);
+  color: var(--green);
+  background: transparent;
+}
+.cta-outline:hover {
+  background: var(--green);
+  color: var(--black);
+  font-weight: 700;
+}
+.cta-outline:focus {
+  outline: none;
+  background: transparent;           /* stays ghost on focus */
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(0, 230, 118, 0.28),
+              0 0 14px rgba(0, 230, 118, 0.18);
+}
+.cta-white {
+  background: var(--green);          /* solid #00e676, not gradient */
+  color: var(--black);
+  border: none;
+  font-weight: 700;
+}
+.cta-white:hover {
+  background: var(--green);          /* stays solid green on hover */
+  box-shadow: 0 0 18px rgba(0, 230, 118, 0.55),
+              0 0 36px rgba(0, 230, 118, 0.25);
+  transform: translateY(-1px);       /* subtle lift */
+}
 
 /* VALUATION CTA */
 .val-cta{background:linear-gradient(135deg,var(--black-surface),var(--green-dim));border-top:1px solid var(--border-bright);border-bottom:1px solid var(--border-bright);padding:5rem 5%;text-align:center;color:var(--white);}
@@ -837,7 +863,138 @@ footer{background:var(--black-mid) !important;color:var(--gray);border-top:1px s
   </div>
 </section>
 
-
+<!-- LIST PROPERTY FORM -->
+<section class="list-form-bg" id="list-form">
+  <div class="inner">
+    <div class="list-form-grid">
+      <div class="reveal">
+        <div class="s-tag">List Today</div>
+        <h2 class="s-title">Share <em>Your Property Details</em></h2>
+        <p class="s-sub">Fill out the form to publish your property directly. It will be stored locally and rendered on the properties page.</p>
+      </div>
+      <div class="c-form reveal d1">
+        <h3>Property Details</h3>
+        <p>List your property with us instantly.</p>
+        <form onsubmit="event.preventDefault(); saveNewListing();">
+          <div class="f-row">
+            <div class="fg">
+              <label for="f-prop-name">Property Name</label>
+              <input type="text" id="f-prop-name" placeholder="e.g. The Heritage Floor" />
+            </div>
+            <div class="fg">
+              <label for="f-price">Price (in ₹)</label>
+              <input type="number" id="f-price" placeholder="e.g. 640000" />
+            </div>
+          </div>
+          
+          <div class="fg">
+            <label for="f-addr">Property Address</label>
+            <input type="text" id="f-addr" placeholder="e.g. Sector 10, Chandigarh" />
+          </div>
+          
+          <div class="f-row">
+            <div class="fg">
+              <label for="f-sqft">Area in sqft</label>
+              <input type="number" id="f-sqft" placeholder="e.g. 1250" />
+            </div>
+            <div class="fg">
+              <label for="f-beds">BHK</label>
+              <input type="text" id="f-beds" placeholder="e.g. 2 BHK" />
+            </div>
+          </div>
+          
+          <div class="f-row">
+            <div class="fg">
+              <label for="f-baths">Bathrooms</label>
+              <input type="number" id="f-baths" placeholder="e.g. 2" />
+            </div>
+            <div class="fg">
+              <label for="f-type">Transaction Type</label>
+              <select id="f-type">
+                <option value="sale">sale</option>
+                <option value="rent">rent</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="f-row">
+            <div class="fg">
+              <label for="f-prop-type">Property Type</label>
+              <input type="text" id="f-prop-type" placeholder="e.g. Apartment" />
+            </div>
+            <div class="fg">
+              <label for="f-status">Status</label>
+              <select id="f-status">
+                <option value="Ready to Move">Ready to Move</option>
+                <option value="Under Construction">Under Construction</option>
+                <option value="Resale">Resale</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="f-row">
+            <div class="fg">
+              <label for="f-furnished">Furnished</label>
+              <select id="f-furnished">
+                <option value="Furnished">Furnished</option>
+                <option value="Semi-Furnished">Semi-Furnished</option>
+                <option value="Unfurnished">Unfurnished</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label for="f-facing">Facing</label>
+              <select id="f-facing">
+                <option value="North">North</option>
+                <option value="South">South</option>
+                <option value="East">East</option>
+                <option value="West">West</option>
+                <option value="North-East">North-East</option>
+                <option value="North-West">North-West</option>
+                <option value="South-East">South-East</option>
+                <option value="South-West">South-West</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="f-row">
+            <div class="fg">
+              <label for="f-floor">Floor</label>
+              <input type="text" id="f-floor" placeholder="e.g. 4 of 12" />
+            </div>
+            <div class="fg">
+              <label for="f-developer">Developer</label>
+              <input type="text" id="f-developer" placeholder="e.g. DLF / Private Owner" />
+            </div>
+          </div>
+          
+          <div class="fg">
+            <label for="f-owner-floor">Private Owner Floor</label>
+            <input type="text" id="f-owner-floor" placeholder="e.g. Ground Floor, owned privately — leave blank if not applicable" />
+          </div>
+          
+          <div class="fg">
+            <label for="f-description">Description</label>
+            <textarea id="f-description" placeholder="Describe the property — location highlights, interiors, amenities..." style="min-height: 100px;"></textarea>
+          </div>
+          
+          <div class="fg">
+            <label for="f-image">Image Upload</label>
+            <input type="file" id="f-image" accept="image/*">
+            <img id="image-preview" style="display:none; width:100%; max-height:200px; object-fit:cover; margin-top:10px; border-radius:8px;">
+          </div>
+          
+          <div class="fg" style="margin-top:1.5rem;">
+            <button type="submit" class="plan-cta cta-white">List Property</button>
+          </div>
+          
+          <div id="f-success" style="display:none;">
+            Property listed successfully! Redirecting...
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
 
 <footer>
   <div class="f-wrap">
@@ -869,23 +1026,5 @@ footer{background:var(--black-mid) !important;color:var(--gray);border-top:1px s
   </div>
 </footer>
 
-<script>
-const revObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revObs.unobserve(e.target);}});},{threshold:0.1});
-document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
-function submitVal(){const v=document.getElementById('valAddr').value.trim();if(!v){document.getElementById('valAddr').style.borderColor='#ef4444';return;}document.getElementById('val-success').style.display='block';}
-function submitListing(){
-  const fields=[{id:'f-first',eid:'e-first',check:v=>v.trim().length>0},{id:'f-last',eid:'e-last',check:v=>v.trim().length>0},{id:'f-email',eid:'e-email',check:v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)},{id:'f-addr',eid:'e-addr',check:v=>v.trim().length>0},{id:'f-type',eid:'e-type',check:v=>v!==''}];
-  let ok=true;
-  fields.forEach(f=>{const el=document.getElementById(f.id);const err=document.getElementById(f.eid);const pass=f.check(el.value);err.style.display=pass?'none':'block';el.style.borderColor=pass?'':'#ef4444';if(!pass)ok=false;});
-  if(ok){document.getElementById('f-success').style.display='block';setTimeout(()=>document.getElementById('f-success').style.display='none',5000);}
-}
-</script>
 </body>
 </html>
-
-
-
-
-
-
-
